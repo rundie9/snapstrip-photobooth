@@ -1,0 +1,56 @@
+/*
+ * Design tokens for the whole booth. Nothing outside this block should name a
+ * raw colour, font or radius. Direction: darkroom lab, paper strips, one amber
+ * accent, hairline rules instead of shadows.
+ */
+@theme {
+    --color-ink: #12100e;
+    --color-ink-raise: #191512;
+    --color-ink-sink: #0c0a09;
+    --color-ink-line: #332c23;
+    --color-paper: #f3ece0;
+    --color-paper-dim: #cdc3b2;
+    --color-muted: #8f8577;
+    --color-amber: #d9a326;
+    --color-amber-soft: #f0cf8a;
+    --color-clay: #b4462f;
+    --color-sage: #7f8f6b;
+
+    /* Derived shades, named so no component needs a raw hex. */
+    --color-line-hover: #4a4136;
+    --color-placeholder: #6a6257;
+    --color-ink-ghost: #57503f;
+    --color-error-bg: #2a1a16;
+    --color-error-ink: #f2d9d2;
+
+    /* Ink used on paper surfaces (receipts, strips, tickets). */
+    --color-paper-ink: #4a443b;
+    --color-paper-muted: #6d6459;
+    --color-paper-ghost: #8b8375;
+    --color-paper-line: #d8d0be;
+    --color-paper-line-soft: #cfc6b2;
+    --color-paper-cell: #ded6c4;
+    --color-paper-cell-soft: #e6dfcf;
+    --color-amber-deep: #8a6a12;
+
+    /* Badge inks. */
+    --color-live-ink: #e5a795;
+    --color-ok-ink: #bcc9a8;
+
+    --font-sans: 'Karla Variable', ui-sans-serif, system-ui, sans-serif;
+    --font-display: 'Bricolage Grotesque Variable', 'Karla Variable', ui-sans-serif, sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, 'Cascadia Mono', Menlo, Consolas, monospace;
+
+    --radius-xs: 2px;
+    --radius-sm: 5px;
+    --radius-md: 11px;
+    --radius-lg: 18px;
+}
+
+:root {
+    /* Shared layout measurements. Screens size their own grids from these. */
+    --shell-bar: 3.75rem;
+    --rail: 19rem;
+    --aside: 14.5rem;
+    --gutter: clamp(1.25rem, 4vw, 3.5rem);
+}

@@ -1,0 +1,358 @@
+.capture-wrap {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+}
+
+/* Mobile: stage over a thumb dock. */
+.capture {
+    display: grid;
+    flex: 1;
+    min-height: 0;
+    grid-template-areas:
+        'stage'
+        'dock';
+    grid-template-rows: minmax(14rem, 1fr) auto;
+    gap: 0.85rem;
+    padding-block: 0.9rem 1.1rem;
+}
+
+.capture__stage {
+    position: relative;
+    grid-area: stage;
+    min-height: 0;
+    overflow: hidden;
+    border: 1px solid var(--color-ink-line);
+    border-radius: var(--radius-md);
+    background: var(--color-ink-sink);
+}
+
+.capture__video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scaleX(-1);
+}
+
+.capture__hud {
+    position: absolute;
+    top: 0.7rem;
+    left: 0.7rem;
+    display: flex;
+    gap: 0.4rem;
+}
+
+.capture__chip {
+    border: 1px solid color-mix(in srgb, var(--color-paper) 18%, transparent);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--color-ink) 72%, transparent);
+    padding: 0.18rem 0.55rem;
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
+    color: var(--color-paper);
+}
+
+.capture__loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+}
+
+.capture__error {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: 0.8rem;
+    padding: 1.5rem;
+    text-align: center;
+    color: var(--color-paper-dim);
+}
+
+.capture__error p {
+    max-width: 24rem;
+    font-size: 0.9rem;
+}
+
+.capture__hint {
+    position: absolute;
+    bottom: 6.2rem;
+    left: 50%;
+    width: max-content;
+    max-width: calc(100% - 2rem);
+    transform: translateX(-50%);
+    border: 1px solid color-mix(in srgb, var(--color-paper) 14%, transparent);
+    border-radius: var(--radius-xs);
+    background: color-mix(in srgb, var(--color-ink) 78%, transparent);
+    padding: 0.45rem 0.7rem;
+    font-size: 0.76rem;
+    text-align: center;
+    color: var(--color-paper);
+}
+
+.shutter {
+    position: absolute;
+    bottom: 1rem;
+    left: 50%;
+    display: grid;
+    width: 4.3rem;
+    height: 4.3rem;
+    transform: translateX(-50%);
+    place-items: center;
+    border: 2px solid var(--color-amber);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--color-ink) 88%, transparent);
+    color: var(--color-amber-soft);
+    transition:
+        background-color 140ms ease,
+        transform 140ms ease;
+}
+
+.shutter:hover:not(:disabled) {
+    background: var(--color-amber);
+    color: var(--color-ink);
+}
+
+.shutter:active:not(:disabled) {
+    transform: translateX(-50%) scale(0.96);
+}
+
+.shutter:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+}
+
+.countdown {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background: color-mix(in srgb, var(--color-ink) 55%, transparent);
+}
+
+.countdown__value {
+    font-family: var(--font-display);
+    font-size: clamp(5rem, 18vw, 8rem);
+    font-weight: 700;
+    line-height: 1;
+    color: var(--color-amber-soft);
+    animation: countdown-pop 650ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes countdown-pop {
+    from {
+        opacity: 0.2;
+        transform: scale(0.72);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.capture__flash {
+    position: absolute;
+    inset: 0;
+    background: var(--color-paper);
+    animation: flash-out 260ms ease-out forwards;
+}
+
+@keyframes flash-out {
+    from {
+        opacity: 0.9;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+/* Thumbnails */
+.capture__shots {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem;
+}
+
+.shot-tile {
+    position: relative;
+    display: grid;
+    aspect-ratio: 4 / 3;
+    place-items: center;
+    overflow: hidden;
+    border: 1px solid var(--color-ink-line);
+    border-radius: var(--radius-xs);
+    background: var(--color-ink-raise);
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
+    color: var(--color-muted);
+}
+
+.shot-tile[data-filled='false'] {
+    border-style: dashed;
+    color: var(--color-ink-ghost);
+}
+
+.shot-tile img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.shot-tile[data-armed='true'] {
+    border-color: var(--color-amber);
+    outline: 2px solid var(--color-amber);
+    outline-offset: 1px;
+}
+
+/* Rails only exist from tablet up, so they stay out of the mobile grid. */
+.capture__rail,
+.capture__aside {
+    display: none;
+}
+
+/* Mobile dock */
+.capture__dock {
+    display: flex;
+    grid-area: dock;
+    flex-direction: column;
+    gap: 0.65rem;
+}
+
+.capture__dock-head,
+.capture__rail-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.capture__count {
+    font-size: 0.68rem;
+    color: var(--color-muted);
+}
+
+.capture__shots--strip {
+    display: flex;
+    gap: 0.45rem;
+    overflow-x: auto;
+    padding-bottom: 0.2rem;
+}
+
+.capture__shots--strip .shot-tile {
+    flex: 0 0 4.1rem;
+}
+
+/* Tablet and up: the thumb rail replaces the dock. */
+@media (min-width: 640px) {
+    .capture {
+        grid-template-areas: 'stage rail';
+        grid-template-columns: minmax(0, 1fr) 16rem;
+        grid-template-rows: minmax(0, 1fr);
+        gap: 1rem;
+        padding-block: 1rem;
+    }
+
+    .capture__dock {
+        display: none;
+    }
+
+    .capture__rail {
+        display: flex;
+        grid-area: rail;
+        flex-direction: column;
+        gap: 0.8rem;
+        overflow-y: auto;
+        border: 1px solid var(--color-ink-line);
+        border-radius: var(--radius-md);
+        background: var(--color-ink-raise);
+        padding: 1rem;
+    }
+
+    .capture__rail-hint {
+        font-size: 0.76rem;
+        line-height: 1.5;
+        color: var(--color-muted);
+    }
+
+    .capture__rail-facts {
+        margin-top: auto;
+        border-top: 1px solid var(--color-ink-line);
+        padding-top: 0.7rem;
+    }
+
+    .capture__hud {
+        display: none;
+    }
+
+    .capture__hint {
+        bottom: 6rem;
+    }
+}
+
+/* Desktop: a left rail with the run state, stage in the middle. */
+@media (min-width: 1024px) {
+    .capture {
+        grid-template-areas: 'aside stage rail';
+        grid-template-columns: 12.5rem minmax(0, 1fr) 17rem;
+        gap: 1.2rem;
+        padding-block: 1.2rem;
+    }
+
+    .capture__aside {
+        display: flex;
+        grid-area: aside;
+        flex-direction: column;
+        gap: 0.9rem;
+        align-self: start;
+        padding-top: 0.3rem;
+    }
+
+    .capture__title {
+        font-size: clamp(2.4rem, 3vw, 3rem);
+    }
+
+    .capture__aside .lede {
+        font-size: 0.88rem;
+    }
+
+    .capture__facts {
+        display: flex;
+        flex-direction: column;
+        gap: 0.45rem;
+        margin: 0;
+        border-top: 1px solid var(--color-ink-line);
+        padding-top: 0.8rem;
+    }
+
+    .capture__facts .meta-row {
+        font-size: 0.78rem;
+    }
+}
+
+@media (min-width: 1440px) {
+    .capture {
+        grid-template-columns: 14rem minmax(0, 1fr) 18rem;
+        gap: 1.5rem;
+        padding-block: 1.5rem;
+    }
+
+    .capture__stage {
+        max-width: 60rem;
+        width: 100%;
+        justify-self: center;
+    }
+
+    .capture__rail {
+        padding: 1.2rem;
+    }
+}

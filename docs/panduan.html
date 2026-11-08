@@ -1,0 +1,1529 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<title>Snapstrip Photobooth - Panduan</title>
+<style>
+  @page { size: A4; margin: 0; }
+
+  :root {
+    --paper: #faf7f1;
+    --paper-soft: #f3eee3;
+    --paper-line: #e2dbca;
+    --ink: #34302a;
+    --ink-soft: #5f594f;
+    --ink-mute: #857d70;
+    --amber: #a97430;
+    --amber-soft: #c69a5c;
+    --sage: #6f7f63;
+    --clay: #9c5f4a;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    font-size: 10.4pt;
+    line-height: 1.6;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .page {
+    position: relative;
+    width: 210mm;
+    min-height: 297mm;
+    padding: 19mm 20mm 20mm;
+    background: var(--paper);
+    page-break-after: always;
+  }
+
+  .page:last-child { page-break-after: auto; }
+
+  h1, h2, h3, h4 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-weight: 600;
+    color: #2a2722;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+
+  h1 { font-size: 30pt; line-height: 1.12; }
+  h2 { font-size: 18.5pt; line-height: 1.2; margin-bottom: 3mm; }
+  h3 { font-size: 12pt; line-height: 1.3; margin: 6mm 0 2mm; }
+  h4 { font-size: 10.6pt; margin: 4.5mm 0 1.4mm; }
+
+  p { margin: 0 0 2.8mm; }
+  ul, ol { margin: 0 0 2.8mm; padding-left: 5.2mm; }
+  li { margin-bottom: 1.4mm; }
+  li::marker { color: var(--amber); }
+  strong { color: #2a2722; font-weight: 600; }
+  a { color: var(--amber); text-decoration: none; }
+
+  .eyebrow {
+    font-family: "Consolas", "Courier New", monospace;
+    font-size: 7.2pt;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 1.8mm;
+  }
+
+  .muted { color: var(--ink-soft); }
+  .small { font-size: 9pt; }
+
+  /* ---------- Cover ---------- */
+  .cover {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .cover__top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--paper-line);
+    padding-bottom: 4mm;
+  }
+
+  .wordmark {
+    font-family: Georgia, serif;
+    font-size: 13pt;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: #2a2722;
+  }
+
+  .wordmark span { color: var(--amber); }
+
+  .cover__mid { padding-top: 6mm; }
+
+  .cover h1 { font-size: 46pt; line-height: 0.98; }
+  .cover h1 span { display: block; color: var(--amber); }
+
+  .cover__lede {
+    max-width: 118mm;
+    margin-top: 6mm;
+    font-size: 11.8pt;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+
+  .cover__strips {
+    display: flex;
+    gap: 5mm;
+    margin-top: 12mm;
+    align-items: flex-start;
+  }
+
+  .strip {
+    width: 26mm;
+    background: #fffdf8;
+    border: 1px solid var(--paper-line);
+    padding: 1.6mm;
+    border-radius: 1mm;
+  }
+
+  .strip--lead { width: 30mm; }
+
+  .strip__head {
+    display: flex;
+    justify-content: space-between;
+    font-family: Consolas, monospace;
+    font-size: 4.4pt;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    padding-bottom: 1mm;
+  }
+
+  .strip__frames { display: flex; flex-direction: column; gap: 1.2mm; }
+
+  .strip__frame {
+    aspect-ratio: 4 / 3;
+    background: #ece4d4;
+    border-radius: 0.4mm;
+  }
+
+  .strip__frame:nth-child(2) { background: #e8d3ae; }
+  .strip__frame:nth-child(3) { background: #dcd6c8; }
+
+  .strip__foot {
+    display: flex;
+    justify-content: space-between;
+    font-family: Consolas, monospace;
+    font-size: 4.2pt;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    border-top: 1px solid #efe8da;
+    margin-top: 1mm;
+    padding-top: 1mm;
+  }
+
+  .cover__meta {
+    display: flex;
+    gap: 12mm;
+    border-top: 1px solid var(--paper-line);
+    padding-top: 5mm;
+    font-size: 9pt;
+    color: var(--ink-soft);
+  }
+
+  .cover__meta div span {
+    display: block;
+    font-family: Consolas, monospace;
+    font-size: 6.8pt;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 1mm;
+  }
+
+  /* ---------- Table of contents ---------- */
+  .toc { margin-top: 5mm; }
+
+  .toc ol { list-style: none; padding: 0; margin: 0; counter-reset: toc; }
+
+  .toc li {
+    counter-increment: toc;
+    display: flex;
+    align-items: baseline;
+    gap: 4mm;
+    border-bottom: 1px dotted var(--paper-line);
+    padding: 2.2mm 0;
+    margin: 0;
+    font-size: 10.2pt;
+  }
+
+  .toc li::before {
+    content: counter(toc, decimal-leading-zero);
+    font-family: Consolas, monospace;
+    font-size: 8.2pt;
+    color: var(--amber);
+    min-width: 8mm;
+  }
+
+  .toc li span:last-child { margin-left: auto; color: var(--ink-mute); font-size: 8.8pt; }
+
+  /* ---------- Blocks ---------- */
+  .callout {
+    border-left: 2.4mm solid var(--amber-soft);
+    background: var(--paper-soft);
+    border-radius: 0 1.4mm 1.4mm 0;
+    padding: 3.2mm 4.2mm;
+    margin: 3.6mm 0;
+    font-size: 9.6pt;
+  }
+
+  .callout--calm { border-left-color: var(--sage); }
+  .callout--warn { border-left-color: var(--clay); }
+  .callout p:last-child { margin-bottom: 0; }
+
+  .callout__label {
+    display: block;
+    font-family: Consolas, monospace;
+    font-size: 6.8pt;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 1.2mm;
+  }
+
+  code {
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 9pt;
+    background: var(--paper-soft);
+    border: 1px solid var(--paper-line);
+    border-radius: 0.8mm;
+    padding: 0.2mm 1.2mm;
+    color: #4a443b;
+  }
+
+  pre {
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 8.4pt;
+    line-height: 1.55;
+    background: #f4efe4;
+    border: 1px solid var(--paper-line);
+    border-radius: 1.4mm;
+    padding: 3mm 3.6mm;
+    margin: 2.6mm 0 3.4mm;
+    white-space: pre-wrap;
+    color: #3f3a33;
+  }
+
+  pre code { background: none; border: 0; padding: 0; font-size: 8.4pt; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 9.2pt;
+    margin: 2.6mm 0 3.4mm;
+  }
+
+  th {
+    text-align: left;
+    font-family: Consolas, monospace;
+    font-size: 7pt;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    border-bottom: 1px solid #d6cfbe;
+    padding: 1.8mm 2.2mm;
+    font-weight: 400;
+  }
+
+  td {
+    border-bottom: 1px solid var(--paper-line);
+    padding: 2mm 2.2mm;
+    vertical-align: top;
+  }
+
+  td:first-child { white-space: nowrap; }
+
+  /* ---------- Steps ---------- */
+  .step {
+    display: grid;
+    grid-template-columns: 9mm 1fr;
+    gap: 3.6mm;
+    padding: 2.8mm 0;
+    border-bottom: 1px solid var(--paper-line);
+  }
+
+  .step:last-child { border-bottom: 0; }
+
+  .step__num {
+    display: grid;
+    place-items: center;
+    width: 9mm;
+    height: 9mm;
+    border: 1px solid var(--amber-soft);
+    border-radius: 50%;
+    font-family: Consolas, monospace;
+    font-size: 8.4pt;
+    color: var(--amber);
+  }
+
+  .step__body h4 { margin: 0 0 0.8mm; font-size: 10.4pt; }
+  .step__body p { margin: 0 0 1.4mm; font-size: 9.6pt; color: var(--ink-soft); }
+  .step__body p:last-child { margin-bottom: 0; }
+  .step__body pre { margin: 2mm 0 0; }
+
+  /* ---------- Flow ---------- */
+  .flow { display: flex; align-items: stretch; gap: 2mm; margin: 4.5mm 0; }
+
+  .flow__box {
+    flex: 1;
+    border: 1px solid var(--paper-line);
+    border-radius: 1.6mm;
+    background: #fffdf8;
+    padding: 2.8mm;
+  }
+
+  .flow__box b {
+    display: block;
+    font-family: Consolas, monospace;
+    font-size: 6.8pt;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 1mm;
+  }
+
+  .flow__box span { font-size: 8.8pt; color: var(--ink-soft); line-height: 1.45; display: block; }
+
+  .flow__arrow { align-self: center; color: var(--ink-mute); font-size: 12pt; }
+
+  /* ---------- Two column ---------- */
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; }
+
+  .card {
+    border: 1px solid var(--paper-line);
+    border-radius: 1.8mm;
+    background: #fffdf8;
+    padding: 3.6mm;
+  }
+
+  .card h4 { margin-top: 0; }
+
+  .rule { height: 1px; background: var(--paper-line); margin: 4.5mm 0; border: 0; }
+
+  .footer-note {
+    position: absolute;
+    left: 20mm;
+    right: 20mm;
+    bottom: 9mm;
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid var(--paper-line);
+    padding-top: 2.2mm;
+    font-family: Consolas, monospace;
+    font-size: 6.6pt;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+
+  .chip {
+    display: inline-block;
+    border: 1px solid var(--paper-line);
+    border-radius: 999px;
+    padding: 0.3mm 2.2mm;
+    font-family: Consolas, monospace;
+    font-size: 7.2pt;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    background: var(--paper-soft);
+  }
+</style>
+</head>
+<body>
+
+<!-- 01 COVER -->
+<section class="page cover">
+  <div class="cover__top">
+    <span class="wordmark">snapstrip<span>.</span></span>
+    <span class="chip">Panduan pemakaian</span>
+  </div>
+
+  <div class="cover__mid">
+    <p class="eyebrow">Photobooth digital</p>
+    <h1>Snap<span>strip</span></h1>
+    <p class="cover__lede">
+      Bilik foto digital untuk acara, kafe, atau studio kecil. Satu kode akses
+      membuka satu sesi, tamu memotret enam kali, memilih susunan cetak, lalu
+      foto dan strip dikirim ke email serta tersimpan di Google Drive.
+    </p>
+
+    <div class="cover__strips">
+      <div class="strip strip--lead">
+        <div class="strip__head"><span>snapstrip</span><span>01</span></div>
+        <div class="strip__frames">
+          <span class="strip__frame"></span><span class="strip__frame"></span>
+          <span class="strip__frame"></span><span class="strip__frame"></span>
+        </div>
+        <div class="strip__foot"><span>6 potret</span><span>6 menit</span></div>
+      </div>
+      <div class="strip">
+        <div class="strip__head"><span>snapstrip</span><span>02</span></div>
+        <div class="strip__frames">
+          <span class="strip__frame"></span><span class="strip__frame"></span>
+          <span class="strip__frame"></span>
+        </div>
+        <div class="strip__foot"><span>6 potret</span><span>6 menit</span></div>
+      </div>
+      <div class="strip">
+        <div class="strip__head"><span>snapstrip</span><span>03</span></div>
+        <div class="strip__frames">
+          <span class="strip__frame"></span><span class="strip__frame"></span>
+          <span class="strip__frame"></span>
+        </div>
+        <div class="strip__foot"><span>6 potret</span><span>6 menit</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cover__meta">
+    <div><span>Versi</span>1.0.0</div>
+    <div><span>Teknologi</span>Laravel 13, React 19, MySQL</div>
+    <div><span>Penyimpanan</span>Google Drive</div>
+  </div>
+</section>
+
+<!-- 02 TOC -->
+<section class="page">
+  <p class="eyebrow">Daftar isi</p>
+  <h2>Isi panduan</h2>
+  <p class="muted">Bacanya berurutan dari atas. Bagian satu sampai empat untuk yang baru pertama kali membuka project ini.</p>
+
+  <div class="toc">
+    <ol>
+      <li><span>Project ini apa</span><span>03</span></li>
+      <li><span>Bagian yang menyusun aplikasi</span><span>04</span></li>
+      <li><span>Menjalankan: persiapan</span><span>05</span></li>
+      <li><span>Menjalankan: menyalakan server</span><span>06</span></li>
+      <li><span>Akun staff dan kode akses</span><span>07</span></li>
+      <li><span>Alur tamu: kode dan potret</span><span>08</span></li>
+      <li><span>Alur tamu: bingkai dan selesai</span><span>09</span></li>
+      <li><span>Alur admin dan operator</span><span>10</span></li>
+      <li><span>Google Drive: membuat kunci</span><span>11</span></li>
+      <li><span>Google Drive: menyambungkan</span><span>12</span></li>
+      <li><span>Memastikan sambungan Google</span><span>13</span></li>
+      <li><span>Melihat data lewat phpMyAdmin</span><span>14</span></li>
+      <li><span>Struktur folder dan alamat API</span><span>15</span></li>
+      <li><span>Mengubah pengaturan dan warna</span><span>16</span></li>
+      <li><span>Kalau ada masalah</span><span>17</span></li>
+      <li><span>Catatan keamanan</span><span>18</span></li>
+    </ol>
+  </div>
+
+  <div class="callout callout--calm">
+    <span class="callout__label">Sebelum mulai</span>
+    <p>
+      Panduan ini menganggap kamu memakai Windows dengan Laragon, karena di situ
+      PHP, MySQL, dan phpMyAdmin sudah tersedia. Kalau memakai macOS atau Linux,
+      langkahnya sama, hanya beda cara memasang PHP dan MySQL.
+    </p>
+  </div>
+
+  <div class="footer-note"><span>Snapstrip / panduan</span><span>02</span></div>
+</section>
+
+<!-- 03 WHAT -->
+<section class="page">
+  <p class="eyebrow">Bagian 01</p>
+  <h2>Project ini apa</h2>
+
+  <p>
+    Snapstrip adalah aplikasi <strong>photobooth digital</strong>. Aplikasi ini
+    dipakai di satu layar, biasanya tablet besar, laptop, atau layar sentuh di
+    bilik foto. Tamu datang, memasukkan kode akses yang diberikan operator, lalu
+    memotret dirinya sendiri lewat kamera perangkat itu.
+  </p>
+
+  <p>
+    Setelah enam potret terkumpul, tamu memilih susunan cetak. Aplikasi menyusun
+    keenam foto menjadi satu lembar strip, mengirimkannya ke email tamu, dan
+    mengunggah semua foto ke Google Drive dalam satu folder yang namanya memakai
+    kode akses tadi. Folder itu yang nanti dipakai operator untuk mencetak atau
+    menyerahkan file asli.
+  </p>
+
+  <h3>Masalah yang dipecahkan</h3>
+  <p class="muted">
+    Photobooth manual biasanya bergantung pada satu orang yang menekan tombol dan
+    menyalin file foto ke flashdisk. Di sini pembagiannya jelas: tamu melayani
+    dirinya sendiri, operator hanya membagikan kode, dan file tersimpan otomatis
+    tanpa ada yang menyalin manual.
+  </p>
+
+  <h3>Alur singkatnya</h3>
+  <div class="flow">
+    <div class="flow__box">
+      <b>01 / kode</b>
+      <span>Operator membuat kode enam karakter. Tamu memasukkan kode dan email.</span>
+    </div>
+    <span class="flow__arrow">&rsaquo;</span>
+    <div class="flow__box">
+      <b>02 / potret</b>
+      <span>Enam kali potret dengan hitungan tiga detik. Foto bisa diulang.</span>
+    </div>
+    <span class="flow__arrow">&rsaquo;</span>
+    <div class="flow__box">
+      <b>03 / cetak</b>
+      <span>Pilih susunan strip. Aplikasi menyusun file cetak.</span>
+    </div>
+    <span class="flow__arrow">&rsaquo;</span>
+    <div class="flow__box">
+      <b>04 / kirim</b>
+      <span>Email berisi strip, Drive berisi folder semua foto.</span>
+    </div>
+  </div>
+
+  <h3>Yang bisa dan belum bisa dilakukan</h3>
+  <table>
+    <thead><tr><th>Sudah jalan</th><th>Belum termasuk</th></tr></thead>
+    <tbody>
+      <tr><td>Kode akses sekali pakai</td><td>Pembayaran online</td></tr>
+      <tr><td>Enam potret dengan potret ulang</td><td>Aplikasi Android atau iOS</td></tr>
+      <tr><td>Tiga susunan cetak</td><td>Filter atau stiker foto</td></tr>
+      <tr><td>Kirim email dan simpan Drive</td><td>Pencetakan langsung ke printer</td></tr>
+      <tr><td>Dashboard admin dan operator</td><td>Laporan penjualan</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <span class="callout__label">Istilah yang dipakai</span>
+    <p>
+      <strong>Kode akses</strong> adalah enam huruf atau angka yang membuka satu
+      sesi. <strong>Sesi</strong> adalah satu kali jalan dari memasukkan kode
+      sampai foto terkirim. <strong>Strip</strong> adalah lembar hasil susunan
+      foto yang siap dicetak.
+    </p>
+  </div>
+
+  <div class="footer-note"><span>Snapstrip / panduan</span><span>03</span></div>
+</section>
+
+<!-- 04 PARTS -->
+<section class="page">
+  <p class="eyebrow">Bagian 02</p>
+  <h2>Bagian yang menyusun aplikasi</h2>
+
+  <p>
+    Aplikasi ini satu project, bukan dua yang terpisah. Halaman yang dilihat tamu
+    dan data yang disimpan berada di tempat yang sama, sehingga tidak ada alamat
+    server kedua yang perlu diurus.
+  </p>
+
+  <div class="cols">
+    <div class="card">
+      <h4>Laravel 13 (PHP)</h4>
+      <p class="small muted">
+        Menyimpan kode akses, mencatat sesi foto, menyusun file strip dengan GD,
+        mengirim email, dan mengunggah ke Google Drive. Semua alamat API ada di
+        bawah <code>/api/v1</code>.
+      </p>
+    </div>
+    <div class="card">
+      <h4>React 19 (JavaScript)</h4>
+      <p class="small muted">
+        Semua layar yang dilihat tamu dan staff. Dibangun dengan Vite, gaya
+        memakai Tailwind 4 dan satu set token warna di
+        <code>resources/css/tokens.css</code>.
+      </p>
+    </div>
+    <div class="card">
+      <h4>MySQL</h4>
+      <p class="small muted">
+        Menyimpan tabel <code>users</code>, <code>access_codes</code>,
+        <code>booth_orders</code>, dan tabel bawaan Laravel. Bisa dilihat
+        langsung lewat phpMyAdmin Laragon.
+      </p>
+    </div>
+    <div class="card">
+      <h4>Google Drive</h4>
+      <p class="small muted">
+        Menyimpan semua foto dan strip per sesi. Satu folder per kode akses.
+        Sambungannya memakai service account, jadi tidak ada login ulang.
+      </p>
+    </div>
+  </div>
+
+  <h3>Yang perlu ada di komputer</h3>
+  <table>
+    <thead><tr><th>Perangkat lunak</th><th>Versi</th><th>Untuk apa</th></tr></thead>
+    <tbody>
+      <tr><td>PHP</td><td>8.3 atau lebih baru</td><td>Menjalankan Laravel</td></tr>
+      <tr><td>Composer</td><td>2.x</td><td>Memasang paket PHP</td></tr>
+      <tr><td>Node.js</td><td>20 atau lebih baru</td><td>Membangun tampilan React</td></tr>
+      <tr><td>MySQL</td><td>8.x</td><td>Menyimpan data</td></tr>
+      <tr><td>Ekstensi PHP</td><td>gd, pdo_mysql, zip</td><td>Menyusun gambar dan koneksi database</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout callout--calm">
+    <span class="callout__label">Kalau memakai Laragon</span>
+    <p>
+      Semua perangkat lunak di atas sudah terpasang. Yang sering perlu dinyalakan
+      hanya dua ekstensi PHP: <code>gd</code> dan <code>pdo_mysql</code>. Caranya
+      dibuka di menu PHP, Extensions, lalu centang keduanya.
+    </p>
+  </div>
+
+  <h3>Kamera dan browser</h3>
+  <p class="muted">
+    Akses kamera hanya diberikan browser pada alamat yang dianggap aman, yaitu
+    <code>localhost</code> atau situs ber-<code>https</code>. Jadi saat mencoba
+    di komputer sendiri, buka lewat <code>http://localhost:8000</code>, bukan
+    lewat alamat IP seperti <code>192.168.x.x</code>. Kalau nanti dipasang di
+    bilik foto dengan tablet lain, server harus memakai HTTPS.
+  </p>
+
+  <div class="footer-note"><span>Snapstrip / panduan</span><span>04</span></div>
+</section>
+
+<!-- 05 RUN 1 -->
+<section class="page">
+  <p class="eyebrow">Bagian 03</p>
+  <h2>Menjalankan: persiapan</h2>
+
+  <p class="muted">
+    Buka terminal di folder project. Semua perintah di bawah dijalankan dari
+    folder itu. Kalau memakai Laragon, klik kanan pada folder project lalu pilih
+    Terminal Here.
+  </p>
+
+  <div class="step">
+    <span class="step__num">1</span>
+    <div class="step__body">
+      <h4>Pasang paket PHP</h4>
+      <p>Sekali saja, atau setiap kali ada perubahan pada <code>composer.json</code>.</p>
+      <pre><code>composer install</code></pre>
+    </div>
+  </div>
+
+  <div class="step">
+    <span class="step__num">2</span>
+    <div class="step__body">
+      <h4>Siapkan file pengaturan</h4>
+      <p>
+        Salin <code>.env.example</code> menjadi <code>.env</code>, lalu isi kunci
+        aplikasi. File <code>.env</code> tidak pernah ikut terkirim ke GitHub
+        karena berisi kata sandi.
+      </p>
+      <pre><code>copy .env.example .env
+php artisan key:generate</code></pre>
+    </div>
+  </div>
+
+  <div class="step">
+    <span class="step__num">3</span>
+    <div class="step__body">
+      <h4>Buat database kosong</h4>
+      <p>
+        Buka phpMyAdmin di <code>http://localhost/phpmyadmin</code>, pilih New,
+        beri nama <code>snapstrip</code>, lalu Create. Pastikan isi
+        <code>.env</code> cocok dengan nama itu.
+      </p>
+      <pre><code>DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=snapstrip
+DB_USERNAME=root
+DB_PASSWORD=</code></pre>
+    </div>
+  </div>
+
+  <div class="step">
+    <span class="step__num">4</span>
+    <div class="step__body">
+      <h4>Bangun tabel dan akun awal</h4>
+      <p>
+        Perintah ini membuat semua tabel, akun staff, dan lima kode akses contoh.
+        <code>migrate:fresh</code> menghapus isi database lebih dulu, jadi jangan
+        dipakai kalau sudah ada data sungguhan.
+      </p>
+      <pre><code>php artisan migrate:fresh --seed
+php artisan storage:link</code></pre>
+    </div>
+  </div>
+
+  <div class="callout callout--calm">
+    <span class="callout__label">Tentang storage:link</span>
+    <p>
+      Perintah kedua membuat tautan supaya foto di
+      <code>storage/app/public</code> bisa dibuka lewat browser di alamat
+      <code>/storage/...</code>. Cukup dijalankan sekali per komputer.
+    </p>
+  </div>
+
+  <div class="footer-note"><span>Snapstrip / panduan</span><span>05</span></div>
+</section>
+
+<!-- 06 RUN 2 -->
+<section class="page">
+  <p class="eyebrow">Bagian 03, lanjutan</p>
+  <h2>Menjalankan: menyalakan server</h2>
+
+  <div class="step">
+    <span class="step__num">5</span>
+    <div class="step__body">
+      <h4>Pasang paket tampilan</h4>
+      <p>Sekali saja. Memerlukan Node.js.</p>
+      <pre><code>npm install</code></pre>
+    </div>
+  </div>
+
+  <div class="step">
+    <span class="step__num">6</span>
+    <div class="step__body">
+      <h4>Nyalakan dua server</h4>
+      <p>
+        Buka dua terminal. Terminal pertama menjalankan Laravel, terminal kedua
+        menjalankan Vite yang menyiapkan tampilan.
+      </p>
+      <pre><code>php artisan serve
+
+npm run dev</code></pre>
+      <p>
+        Lalu buka <code>http://localhost:8000</code> di browser. Kalau ingin satu
+        perintah saja, <code>composer run dev</code> menyalakan keduanya
+        sekaligus.
+      </p>
+    </div>
+  </div>
+
+  <div class="step">
+    <span class="step__num">7</span>
+    <div class="step__body">
+      <h4>Periksa bahwa semuanya hidup</h4>
+      <p>Dua alamat ini bisa dibuka untuk memastikan server sehat.</p>
+      <pre><code>http://localhost:8000/health/live
+http://localhost:8000/health/ready</code></pre>
+      <p>
+        Balasan <code>UP</code> berarti normal. Kalau <code>ready</code> menjawab
+        <code>DOWN</code>, MySQL belum menyala atau nama database di
+        <code>.env</code> belum cocok.
+      </p>
+    </div>
+  </div>
+
+  <div class="callout callout--warn">
+    <span class="callout__label">Kalau halaman kosong</span>
+    <p>
+      Biasanya karena server Vite belum jalan. Pastikan <code>npm run dev</code>
+      masih terbuka di terminal lain, lalu muat ulang halaman. Untuk pemakaian
+      tanpa terminal, jalankan <code>npm run build</code> sekali supaya
+      tampilannya ikut tersimpan.
+    </p>
+  </div>
+
+  <h3>Ringkasan urutan dari nol</h3>
+  <pre><code>composer install
+copy .env.example .env
+php artisan key:generate
+php artisan migrate:fresh --seed
+php artisan storage:link
+npm install
+php artisan serve
+npm run dev</code></pre>
+
+  <div class="footer-note"><span>Snapstrip / panduan</span><span>06</span></div>
+</section>
+
+<!-- 07 ACCOUNTS -->
+<section class="page">
+  <p class="eyebrow">Bagian 04</p>
+  <h2>Akun staff dan kode akses</h2>
+
+  <p>
+    Ada dua peran staff. Keduanya masuk dari tombol <strong>Staff</strong> di
+    pojok kanan atas layar tamu. Setelah data awal dibuat, dua akun ini tersedia:
+  </p>
+
+  <table>
+    <thead><tr><th>Peran</th><th>Nama pengguna</th><th>Kata sandi</th><th>Tugas</th></tr></thead>
+    <tbody>
+      <tr><td>Admin</td><td><code>admin</code></td><td><code>password</code></td><td>Membuat kode akses</td></tr>
+      <tr><td>Operator</td><td><code>operator</code></td><td><code>password</code></td><td>Memantau kode dan sesi</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout callout--warn">
+    <span class="callout__label">Wajib diganti</span>
+    <p>
+      Kata sandi <code>password</code> hanya untuk mencoba di komputer sendiri.
+      Sebelum dipakai di acara sungguhan, ganti lewat perintah di bawah.
+    </p>
+  </div>
+
+  <pre><code>php artisan tinker
+&gt;&gt;&gt; App\Models\User::where('username', 'admin')
+...     -&gt;update(['password' =&gt; Hash::make('kata-sandi-baru')]);</code></pre>
+
+  <h3>Membuat kode akses</h3>
+  <p>
+    Masuk sebagai admin, lalu tekan tombol <strong>Buat kode</strong>. Kode baru
+    muncul sebagai kartu kertas besar dengan tombol salin. Kode ini yang
+    ditunjukkan atau dibacakan ke tamu.
+  </p>
+
+  <div class="cols">
+    <div class="card">
+      <h4>Sifat kode</h4>
+      <ul class="small muted" style="margin-bottom:0">
+        <li>Enam karakter, huruf besar dan angka.</li>
+        <li>Berlaku untuk satu sesi saja.</li>
+        <li>Langsung hangus setelah dipakai.</li>
+        <li>Email tamu tercatat bersama kode itu.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>Kalau kode ditolak</h4>
+      <ul class="small muted" style="margin-bottom:0">
+        <li>Kode sudah dipakai tamu lain.</li>
+        <li>Kode salah ketik, perhatikan huruf O dan angka 0.</li>
+        <li>Kode sudah dihapus dari database.</li>
+        <li>Solusinya: buat kode baru dari akun admin.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout callout--calm">
+    <span class="callout__label">Masa berlaku sesi</span>
+    <p>
+      Satu sesi berjalan enam menit, dihitung dari saat kode diterima sampai
+      tombol cetak ditekan. Kalau waktu habis, layar kembali ke halaman kode dan
+      kode yang tadi sudah hangus. Tamu perlu kode baru. Angka ini bisa diubah di
+      <code>config/booth.php</code> pada baris <code>session_seconds</code>.
+    </p>
+  </div>
+
+  <div class="footer-note"><span>Snapstrip / panduan</span><span>07</span></div>
+</section>
+
+<!-- 08 GUEST 1 -->
+<section class="page">
+  <p class="eyebrow">Bagian 05</p>
+  <h2>Alur tamu: kode dan potret</h2>
+
+  <h3>Halaman awal</h3>
+  <p>
+    Layar menyambut dengan tulisan Snapstrip dan tombol <strong>Mulai sesi</strong>.
+    Di bawahnya ada keterangan jumlah potret, lama sesi, dan harga mulai. Tiga
+    lembar strip kertas di sisi kanan hanya hiasan, bukan tombol.
+  </p>
+
+  <h3>Memasukkan kode</h3>
+  <p>
+    Tamu mengetik enam karakter kode, lalu email. Kotak kode otomatis mengubah
+    huruf menjadi besar dan membuang karakter yang tidak perlu. Tombol
+    <strong>Lanjut ke kamera</strong> baru menyala setelah kode lengkap dan email
+    terlihat benar. Di sisi kanan ada pratinjau tiket yang ikut terisi sambil
+    mengetik, jadi tamu bisa memastikan kodenya tidak salah.
+  </p>
+
+  <h3>Mengambil potret</h3>
+  <p>
+    Kamera menyala dengan gambar dicerminkan, seperti bercermin. Ada dua cara
+    memotret:
+  </p>
+  <ul>
+    <li>Tekan tombol bulat besar di bawah gambar kamera.</li>
+    <li>Atau sentuh di mana saja pada gambar kamera.</li>
+  </ul>
+  <p>
+    Setelah ditekan, muncul hitungan tiga, dua, satu, lalu layar berkedip putih
+    tanda foto tersimpan. Jumlah foto yang sudah terisi terlihat di panel
+    <strong>Kontak cetak</strong>.
+  </p>
+
+  <h3>Mengulang satu foto</h3>
+  <p>
+    Ketuk salah satu kotak kecil di panel kontak cetak. Kotak itu diberi garis
+    kuning, artinya foto berikutnya akan menggantikan foto tersebut. Tekan tombol
+    potret sekali lagi. Kalau berubah pikiran, ketuk kotak yang sama untuk
+    membatalkan.
+  </p>
+
+  <div class="callout callout--calm">
+    <span class="callout__label">Tampilan menyesuaikan layar</span>
+    <p>
+      Di ponsel, panel foto pindah ke bawah kamera. Di tablet, panel pindah ke
+      samping kamera. Di layar lebar, muncul panel kiri berisi sisa waktu dan
+      jumlah potret, plus panel kanan untuk memilih foto yang mau diulang.
+    </p>
+  </div>
+
+  <div class="footer-note"><span>Snapstrip / panduan</span><span>08</span></div>
+</section>
+
+<!-- 09 GUEST 2 -->
+<section class="page">
+  <p class="eyebrow">Bagian 05, lanjutan</p>
+  <h2>Alur tamu: bingkai dan selesai</h2>
+
+  <h3>Memilih susunan cetak</h3>
+  <p>
+    Setelah enam foto terisi, tombol <strong>Pilih bingkai</strong> menyala. Di
+    layar berikutnya ada tiga pilihan:
+  </p>
+  <table>
+    <thead><tr><th>Nama</th><th>Bentuk</th><th>Harga</th></tr></thead>
+    <tbody>
+      <tr><td>Strip Six</td><td>Satu kolom, enam potret, seperti film strip</td><td>Rp35.000</td></tr>
+      <tr><td>Grid Six</td><td>Dua kolom tiga baris</td><td>Rp35.000</td></tr>
+      <tr><td>Postcard Four</td><td>Dua kolom dua baris, memakai empat foto pertama</td><td>Rp30.000</td></tr>
+    </tbody>
+  </table>
+  <p class="muted">
+    Apa pun pilihannya, keenam foto tetap dikirim penuh ke email dan Drive.
+    Susunan hanya menentukan bentuk lembar yang dicetak.
+  </p>
+
+  <h3>Selesai</h3>
+  <p>
+    Tekan <strong>Cetak dan kirim</strong>. Layar berganti ke struk hasil: strip
+    kecil sebagai pratinjau, kode sesi, jumlah potret, nama bingkai, dan total.
+    Kalau Google Drive sudah tersambung, muncul tautan folder Drive. Tombol
+    <strong>Sesi baru</strong> mengembalikan layar ke halaman awal untuk tamu
+    berikutnya.
+  </p>
+
+  <h3>Apa yang terjadi di belakang layar</h3>
+  <ol>
+    <li>Keenam foto dikirim ke server, masing-masing diperiksa jenis dan ukurannya.</li>
+    <li>Server menyimpan foto ke folder sesi di dalam <code>storage/app/public</code>.</li>
+    <li>Server menyusun file strip sesuai bingkai yang dipilih.</li>
+    <li>Email berisi tautan dan lampiran strip dikirim ke alamat tamu.</li>
+    <li>Folder baru dibuat di Google Drive, diisi enam foto dan satu strip.</li>
+    <li>Tautan folder disimpan, lalu ditampilkan di layar selesai.</li>
+  </ol>
+
+  <div class="callout">
+    <span class="callout__label">Kalau waktu habis</span>
+    <p>
+      Layar kembali ke halaman kode dan kode sebelumnya sudah hangus. Berikan kode
+      baru. Foto yang sudah diambil tidak tersimpan karena sesinya dianggap gagal.
+    </p>
+  </div>
+
+  <div class="footer-note"><span>Snapstrip / panduan</span><span>09</span></div>
+</section>
+
+<!-- 10 STAFF -->
+<section class="page">
+  <p class="eyebrow">Bagian 06</p>
+  <h2>Alur admin dan operator</h2>
+
+  <h3>Masuk</h3>
+  <p>
+    Tekan tombol <strong>Staff</strong> di pojok kanan atas. Pilih peran, lalu isi
+    nama pengguna dan kata sandi. Kalau salah, kolom yang bermasalah diberi garis
+    merah dan muncul satu pemberitahuan di bawah layar, bukan jendela peringatan
+    browser.
+  </p>
+
+  <h3>Dashboard admin</h3>
+  <p>Isinya tiga hal:</p>
+  <ul>
+    <li><strong>Tiga angka</strong> di atas: total kode, kode aktif, kode terpakai.</li>
+    <li><strong>Tombol Buat kode</strong> untuk membuat kode baru.</li>
+    <li><strong>Daftar kode</strong> berisi kode, status, email pemakai, waktu dipakai, dan waktu dibuat.</li>
+  </ul>
+  <p class="muted">
+    Kode yang baru dibuat muncul sebagai kartu kertas besar di atas daftar,
+    lengkap dengan tombol <strong>Salin</strong>. Kartu itu tetap ada sampai kamu
+    membuat kode berikutnya atau menekan keluar.
+  </p>
+
+  <h3>Dashboard operator</h3>
+  <p>
+    Hampir sama, tetapi tanpa tombol membuat kode. Operator hanya memantau:
+    berapa kode aktif, berapa yang sudah terpakai, siapa pemakainya, dan kapan
+    dipakai. Ada tombol <strong>Muat ulang</strong> untuk mengambil data terbaru
+    tanpa keluar dari halaman.
+  </p>
+
+  <div class="cols">
+    <div class="card">
+      <h4>Admin cocok untuk</h4>
+      <ul class="small muted" style="margin-bottom:0">
+        <li>Kasir atau penanggung jawab acara.</li>
+        <li>Orang yang membagikan kode ke tamu.</li>
+        <li>Orang yang boleh menambah kuota sesi.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>Operator cocok untuk</h4>
+      <ul class="small muted" style="margin-bottom:0">
+        <li>Petugas yang menjaga bilik foto.</li>
+        <li>Orang yang perlu memeriksa kode tanpa bisa membuatnya.</li>
+        <li>Shift kedua yang hanya melanjutkan sesi.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Membaca status kode</h3>
+  <table>
+    <thead><tr><th>Status</th><th>Artinya</th><th>Tindakan</th></tr></thead>
+    <tbody>
+      <tr><td><span class="chip">aktif</span></td><td>Belum dipakai, bisa diberikan ke tamu</td><td>Tidak perlu apa-apa</td></tr>
+      <tr><td><span class="chip">terpakai</span></td><td>Sudah dipakai satu sesi</td><td>Buat kode baru untuk tamu berikutnya</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <span class="callout__label">Satu kode satu tamu</span>
+    <p>
+      Kode yang sudah terpakai tidak bisa diaktifkan kembali dari layar. Ini
+      disengaja supaya tidak ada dua tamu memakai kode yang sama. Kalau tamu gagal
+      di tengah jalan karena waktu habis, berikan kode baru.
+    </p>
+  </div>
+
+  <div class="footer-note"><span>Snapstrip / panduan</span><span>10</span></div>
+</section>
+
+<!-- 11 GOOGLE 1 -->
+<section class="page">
+  <p class="eyebrow">Bagian 07</p>
+  <h2>Google Drive: membuat kunci</h2>
+
+  <p>
+    Bagian ini opsional. Tanpa sambungan Google, semua foto tetap tersimpan di
+    server dan tetap dikirim lewat email. Yang hilang hanya salinan di Drive.
+  </p>
+
+  <p class="muted">
+    Caranya memakai <strong>service account</strong>, yaitu akun robot milik
+    Google yang dipakai server untuk mengunggah file. Akun ini tidak punya kotak
+    masuk dan tidak pernah minta login ulang, cocok untuk server yang menyala
+    terus.
+  </p>
+
+  <div class="step">
+    <span class="step__num">1</span>
+    <div class="step__body">
+      <h4>Buat project di Google Cloud Console</h4>
+      <p>
+        Buka <code>console.cloud.google.com</code>, masuk dengan akun Google kamu,
+        lalu buat project baru. Namanya bebas, misalnya
+        <em>Snapstrip Booth</em>.
+      </p>
+    </div>
+  </div>
+
+  <div class="step">
+    <span class="step__num">2</span>
+    <div class="step__body">
+      <h4>Aktifkan Google Drive API</h4>
+      <p>
+        Masuk ke menu <strong>APIs &amp; Services</strong>, pilih
+        <strong>Library</strong>, cari <em>Google Drive API</em>, lalu tekan
+        <strong>Enable</strong>.
+      </p>
+    </div>
+  </div>
+
+  <div class="step">
+    <span class="step__num">3</span>
+    <div class="step__body">
+      <h4>Buat service account</h4>
+      <p>
+        Buka <strong>IAM &amp; Admin</strong>, pilih
+        <strong>Service Accounts</strong>, tekan
+        <strong>Create Service Account</strong>. Beri nama, misalnya
+        <em>snapstrip-uploader</em>. Peran di project boleh dikosongkan, karena
+        izinnya nanti diberikan langsung di folder Drive.
+      </p>
+    </div>
+  </div>
+
+  <div class="step">
+    <span class="step__num">4</span>
+    <div class="step__body">
+      <h4>Unduh kunci JSON</h4>
+      <p>
+        Buka service account yang baru dibuat, masuk ke tab
+        <strong>Keys</strong>, tekan <strong>Add key</strong>, pilih
+        <strong>Create new key</strong>, lalu pilih <strong>JSON</strong>. Sebuah
+        file <code>.json</code> akan terunduh.
+      </p>
+      <p>
+        Simpan file itu di folder project dengan nama
+        <code>storage/app/google/service-account.json</code>. Folder ini sudah
+        diabaikan oleh Git, jadi kuncinya tidak akan ikut terkirim ke GitHub.
+      </p>
+    </div>
+  </div>
+
+  <div class="callout callout--warn">
+    <span class="callout__label">Jangan bagikan</span>
+    <p>
+      File <code>service-account.json</code> adalah kunci. Siapa pun yang
+      memegangnya bisa mengunggah ke Drive kamu. Kalau file itu terlanjur
+      terkirim ke orang lain, buka halaman Keys di Google Cloud, hapus kuncinya,
+      lalu buat yang baru.
+    </p>
+  </div>
+
+  <div class="footer-note"><span>Snapstrip / panduan</span><span>11</span></div>
+</section>
+
+<!-- 12 GOOGLE 2 -->
+<section class="page">
+  <p class="eyebrow">Bagian 07, lanjutan</p>
+  <h2>Google Drive: menyambungkan</h2>
+
+  <div class="step">
+    <span class="step__num">5</span>
+    <div class="step__body">
+      <h4>Bagikan folder Drive</h4>
+      <p>
+        Buat satu folder di Google Drive sebagai tempat semua sesi, misalnya
+        <em>Snapstrip Hasil</em>. Buka file JSON tadi, cari baris
+        <code>client_email</code>. Alamatnya seperti
+        <code>snapstrip-uploader@nama-project.iam.gserviceaccount.com</code>.
+      </p>
+      <p>
+        Klik kanan folder Drive, pilih <strong>Share</strong>, tempel alamat itu,
+        dan beri akses <strong>Editor</strong>. Tanpa langkah ini unggahan akan
+        ditolak dengan pesan izin.
+      </p>
+    </div>
+  </div>
+
+  <div class="step">
+    <span class="step__num">6</span>
+    <div class="step__body">
+      <h4>Isi file .env</h4>
+      <p>
+        Ambil ID folder dari alamatnya. Kalau alamatnya
+        <code>drive.google.com/drive/folders/1AbCdEfGhIjK</code>, maka ID-nya
+        <code>1AbCdEfGhIjK</code>.
+      </p>
+      <pre><code>GOOGLE_DRIVE_FOLDER_ID=1AbCdEfGhIjK</code></pre>
+      <p>
+        Kalau file JSON disimpan di tempat lain, tambahkan juga baris
+        <code>GOOGLE_SERVICE_ACCOUNT_JSON</code> berisi alamat lengkap file itu.
+      </p>
+    </div>
+  </div>
+
+  <div class="step">
+    <span class="step__num">7</span>
+    <div class="step__body">
+      <h4>Bersihkan cache lalu coba satu sesi</h4>
+      <pre><code>php artisan config:clear</code></pre>
+      <p>
+        Jalankan satu sesi penuh. Setelah selesai, folder baru akan muncul di
+        Drive dengan nama kode akses di depan, misalnya
+        <code>NUJJDX SNAP-XXXXXXXX</code>. Di dalamnya ada enam foto dan satu file
+        strip.
+      </p>
+    </div>
+  </div>
+
+  <div class="callout callout--calm">
+    <span class="callout__label">Kalau unggahan gagal</span>
+    <p>
+      Kegagalan Drive tidak membatalkan sesi. Foto tetap tersimpan di server dan
+      email tetap dikirim. Pesan sebabnya dicatat di
+      <code>storage/logs/laravel.log</code> dengan awalan <em>Upload Drive gagal</em>.
+      Tiga penyebab paling sering: folder belum dibagikan ke service account,
+      Drive API belum diaktifkan, atau ID folder salah.
+    </p>
+  </div>
+
+  <div class="footer-note"><span>Snapstrip / panduan</span><span>12</span></div>
+</section>
+
+<!-- 13 GOOGLE 3 -->
+<section class="page">
+  <p class="eyebrow">Bagian 07, lanjutan</p>
+  <h2>Memastikan sambungan Google benar</h2>
+
+  <p class="muted">
+    Kalau ingin memeriksa tanpa harus memotret enam kali, jalankan perintah
+    berikut. Perintah ini hanya membaca konfigurasi, tidak mengunggah apa pun.
+  </p>
+
+  <pre><code>php artisan tinker
+&gt;&gt;&gt; app(App\Services\GoogleDriveUploader::class)-&gt;isConfigured()</code></pre>
+
+  <p>
+    Hasil <code>true</code> berarti file kunci ada dan ID folder sudah terisi.
+    Hasil <code>false</code> berarti salah satunya belum siap.
+  </p>
+
+  <h3>Apa yang dikirim ke Drive</h3>
+  <table>
+    <thead><tr><th>Isi folder</th><th>Keterangan</th></tr></thead>
+    <tbody>
+      <tr><td><code>potret-1.jpg</code> sampai <code>potret-6.jpg</code></td><td>Enam foto asli, urutan sesuai pengambilan</td></tr>
+      <tr><td><code>strip-SNAP-XXXXXXXX.jpg</code></td><td>Lembar siap cetak, sudah disusun sesuai bingkai</td></tr>
+    </tbody>
+  </table>
+
+  <p>
+    Tautan folder disimpan di kolom <code>drive_link</code> pada tabel
+    <code>booth_orders</code>, ikut tampil di layar selesai, dan ikut disertakan
+    dalam email tamu.
+  </p>
+
+  <h3>Email</h3>
+  <p>
+    Pada pemasangan baru, email tidak benar-benar dikirim. Isinya ditulis ke
+    <code>storage/logs/laravel.log</code> supaya aman dites tanpa alamat
+    sungguhan. Untuk mengirim sungguhan, isi pengaturan SMTP di <code>.env</code>:
+  </p>
+
+  <pre><code>MAIL_MAILER=smtp
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=587
+MAIL_USERNAME=alamat@gmail.com
+MAIL_PASSWORD=kata-sandi-aplikasi
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS=alamat@gmail.com
+MAIL_FROM_NAME="Snapstrip"</code></pre>
+
+  <p class="muted">
+    Untuk Gmail, <code>MAIL_PASSWORD</code> bukan kata sandi akun biasa,
+    melainkan kata sandi aplikasi yang dibuat di pengaturan keamanan akun Google.
+    Setelah mengubah <code>.env</code>, jalankan <code>php artisan config:clear</code>.
+  </p>
+
+  <div class="footer-note"><span>Snapstrip / panduan</span><span>13</span></div>
+</section>
+
+<!-- 14 PHPMYADMIN -->
+<section class="page">
+  <p class="eyebrow">Bagian 08</p>
+  <h2>Melihat data lewat phpMyAdmin</h2>
+
+  <p>
+    phpMyAdmin adalah halaman web bawaan Laragon untuk melihat isi database tanpa
+    menulis perintah. Buka <code>http://localhost/phpmyadmin</code>, lalu pilih
+    database <code>snapstrip</code> di daftar sebelah kiri.
+  </p>
+
+  <h3>Tiga tabel yang penting</h3>
+
+  <h4>access_codes</h4>
+  <p class="small muted">
+    Semua kode akses. Kolom <code>code</code> berisi enam karakter,
+    <code>status</code> berisi <code>active</code> atau <code>used</code>,
+    <code>used_email</code> berisi email tamu, dan <code>used_at</code> berisi
+    waktu kode dipakai.
+  </p>
+
+  <h4>booth_orders</h4>
+  <p class="small muted">
+    Satu baris untuk satu sesi foto. Kolom yang sering dilihat:
+    <code>public_id</code> (kode sesi seperti SNAP-XXXXXXXX), <code>email</code>,
+    <code>layout_id</code> (bingkai yang dipilih), <code>shot_count</code>
+    (jumlah foto), <code>amount</code> (harga), <code>strip_path</code> (lokasi
+    file strip), <code>drive_link</code> (tautan folder Drive), dan
+    <code>email_sent_at</code> (waktu email terkirim).
+  </p>
+
+  <h4>users</h4>
+  <p class="small muted">
+    Akun staff. Kolom <code>username</code> untuk masuk, <code>role</code> berisi
+    <code>admin</code> atau <code>operator</code>, dan <code>password</code>
+    berisi kata sandi yang sudah diacak. Kata sandi asli tidak bisa dibaca, hanya
+    bisa diganti.
+  </p>
+
+  <h3>Mengganti kata sandi staff</h3>
+  <p class="muted">
+    Cara paling mudah tetap lewat <code>php artisan tinker</code> di Bagian 04,
+    karena phpMyAdmin tidak bisa membuat acakan kata sandi Laravel. Kalau tetap
+    ingin dari phpMyAdmin, jalankan SQL berikut setelah mengganti teks di dalam
+    tanda kutip dengan hasil acakan dari tinker.
+  </p>
+
+  <pre><code>UPDATE users
+SET password = 'hasil-acakan-dari-tinker'
+WHERE username = 'admin';</code></pre>
+
+  <div class="callout callout--calm">
+    <span class="callout__label">Melihat file foto</span>
+    <p>
+      Foto tidak disimpan di database, hanya alamatnya. File aslinya ada di folder
+      <code>storage/app/public/photos</code>. Untuk membukanya lewat browser,
+      pastikan <code>php artisan storage:link</code> sudah pernah dijalankan, lalu
+      akses lewat <code>/storage/photos/...</code>.
+    </p>
+  </div>
+
+  <div class="footer-note"><span>Snapstrip / panduan</span><span>14</span></div>
+</section>
+
+<!-- 15 STRUCTURE -->
+<section class="page">
+  <p class="eyebrow">Bagian 09</p>
+  <h2>Struktur folder dan alamat API</h2>
+
+  <p class="muted">
+    Bagian ini untuk yang ingin mengubah kode. Kalau hanya memakai aplikasinya,
+    boleh dilewati.
+  </p>
+
+  <h3>Folder yang sering disentuh</h3>
+  <table>
+    <thead><tr><th>Lokasi</th><th>Isinya</th></tr></thead>
+    <tbody>
+      <tr><td><code>config/booth.php</code></td><td>Jumlah potret, lama sesi, daftar bingkai dan harga</td></tr>
+      <tr><td><code>app/Http/Controllers/Api</code></td><td>Endpoint kode akses, login, sesi foto</td></tr>
+      <tr><td><code>app/Services/StripComposer.php</code></td><td>Menyusun file strip dengan GD</td></tr>
+      <tr><td><code>app/Services/GoogleDriveUploader.php</code></td><td>Mengunggah folder sesi ke Drive</td></tr>
+      <tr><td><code>resources/css/tokens.css</code></td><td>Semua warna, huruf, dan sudut lengkung</td></tr>
+      <tr><td><code>resources/js/features</code></td><td>Satu folder per langkah tamu, plus folder staff</td></tr>
+      <tr><td><code>resources/views/app.blade.php</code></td><td>Kerangka halaman yang memuat React</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Alamat API</h3>
+  <p class="muted">
+    Semua balasan memakai bentuk yang sama:
+    <code>{ message, data, meta }</code> untuk berhasil, dan
+    <code>{ error: { message, traceId, details } }</code> untuk gagal.
+  </p>
+  <table>
+    <thead><tr><th>Metode dan alamat</th><th>Kegunaan</th><th>Perlu masuk</th></tr></thead>
+    <tbody>
+      <tr><td><code>GET /api/v1/layouts</code></td><td>Daftar bingkai cetak</td><td>Tidak</td></tr>
+      <tr><td><code>POST /api/v1/booth-sessions</code></td><td>Menukar kode dengan sesi baru</td><td>Tidak</td></tr>
+      <tr><td><code>POST /api/v1/booth-sessions/{id}/captures</code></td><td>Mengirim enam foto dan bingkai</td><td>Tidak</td></tr>
+      <tr><td><code>POST /api/v1/auth/login</code></td><td>Masuk staff</td><td>Tidak</td></tr>
+      <tr><td><code>GET /api/v1/auth/session</code></td><td>Memeriksa sesi staff yang aktif</td><td>Tidak</td></tr>
+      <tr><td><code>POST /api/v1/auth/logout</code></td><td>Keluar</td><td>Tidak</td></tr>
+      <tr><td><code>GET /api/v1/access-codes</code></td><td>Daftar kode dan hitungannya</td><td>Ya</td></tr>
+      <tr><td><code>POST /api/v1/access-codes</code></td><td>Membuat kode baru</td><td>Ya, admin</td></tr>
+      <tr><td><code>GET /health/live</code></td><td>Memastikan proses hidup</td><td>Tidak</td></tr>
+      <tr><td><code>GET /health/ready</code></td><td>Memastikan database siap</td><td>Tidak</td></tr>
+    </tbody>
+  </table>
+
+  <div class="footer-note"><span>Snapstrip / panduan</span><span>15</span></div>
+</section>
+
+<!-- 16 CONFIG -->
+<section class="page">
+  <p class="eyebrow">Bagian 09, lanjutan</p>
+  <h2>Mengubah pengaturan dan warna</h2>
+
+  <h3>Jumlah potret dan bingkai</h3>
+  <p>
+    Semua pengaturan itu ada di <code>config/booth.php</code>. Kalau
+    <code>shots_required</code> diubah dari 6 menjadi 4, tampilan otomatis
+    menyesuaikan karena jumlah kotak diambil dari API. Setelah mengubah
+    konfigurasi, jalankan <code>php artisan config:clear</code>.
+  </p>
+
+  <pre><code>'shots_required' =&gt; 6,
+'session_seconds' =&gt; 6 * 60,
+
+'layouts' =&gt; [
+    [
+        'id' =&gt; 'strip-six',
+        'name' =&gt; 'Strip Six',
+        'columns' =&gt; 1,
+        'rows' =&gt; 6,
+        'shots_used' =&gt; 6,
+        'price' =&gt; 35000,
+        // ...
+    ],
+],</code></pre>
+
+  <h3>Warna</h3>
+  <p>
+    Semua warna ada di <code>resources/css/tokens.css</code>. Mengganti nilai
+    <code>--color-amber</code> akan mengubah seluruh tombol, garis, dan aksen di
+    aplikasi tanpa menyentuh komponen satu per satu.
+  </p>
+
+  <table>
+    <thead><tr><th>Token</th><th>Dipakai untuk</th></tr></thead>
+    <tbody>
+      <tr><td><code>--color-ink</code></td><td>Latar utama</td></tr>
+      <tr><td><code>--color-paper</code></td><td>Teks terang dan kertas strip</td></tr>
+      <tr><td><code>--color-amber</code></td><td>Tombol utama dan aksen</td></tr>
+      <tr><td><code>--color-clay</code></td><td>Kesalahan dan status terpakai</td></tr>
+      <tr><td><code>--color-sage</code></td><td>Status aktif dan berhasil</td></tr>
+      <tr><td><code>--font-display</code></td><td>Judul besar</td></tr>
+      <tr><td><code>--font-sans</code></td><td>Teks biasa</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout callout--calm">
+    <span class="callout__label">Kenapa memakai token</span>
+    <p>
+      Semua komponen hanya menyebut nama token, tidak pernah menulis kode warna
+      langsung. Jadi satu perubahan di file token langsung berlaku di seluruh
+      halaman, dan tidak ada bagian yang tertinggal dengan warna lama.
+    </p>
+  </div>
+
+  <div class="footer-note"><span>Snapstrip / panduan</span><span>16</span></div>
+</section>
+
+<!-- 17 TROUBLE -->
+<section class="page">
+  <p class="eyebrow">Bagian 10</p>
+  <h2>Kalau ada masalah</h2>
+
+  <table>
+    <thead><tr><th>Yang terlihat</th><th>Penyebab</th><th>Solusi</th></tr></thead>
+    <tbody>
+      <tr><td>Halaman hitam kosong</td><td>Vite belum jalan</td><td>Jalankan <code>npm run dev</code>, muat ulang</td></tr>
+      <tr><td>Warna tidak muncul</td><td>CSS gagal dibangun</td><td>Jalankan <code>npm run build</code> lalu <code>npm run dev</code></td></tr>
+      <tr><td>Kamera tidak bisa dibuka</td><td>Izin ditolak atau bukan localhost</td><td>Izinkan kamera di bilah alamat, muat ulang</td></tr>
+      <tr><td>Tombol Lanjut tidak menyala</td><td>Kode belum enam karakter</td><td>Periksa panjang kode dan tanda at pada email</td></tr>
+      <tr><td>Kode ditolak</td><td>Kode sudah dipakai</td><td>Buat kode baru dari akun admin</td></tr>
+      <tr><td>Gagal masuk staff</td><td>Data awal belum dibuat</td><td>Jalankan <code>migrate:fresh --seed</code></td></tr>
+      <tr><td>Tabel tidak ditemukan</td><td>Database belum dimigrasi</td><td>Jalankan <code>php artisan migrate</code></td></tr>
+      <tr><td>Error koneksi database</td><td>MySQL mati atau isi <code>.env</code> salah</td><td>Nyalakan MySQL, cocokkan nama database</td></tr>
+      <tr><td>Foto tidak muncul</td><td>Tautan penyimpanan belum dibuat</td><td>Jalankan <code>php artisan storage:link</code></td></tr>
+      <tr><td>Drive kosong setelah sesi</td><td>Folder belum dibagikan</td><td>Ulangi langkah 5 di Bagian 07</td></tr>
+      <tr><td>Email tidak masuk</td><td>Mailer masih mode log</td><td>Isi SMTP di <code>.env</code> seperti Bagian 07</td></tr>
+      <tr><td>Kembali ke halaman kode</td><td>Waktu enam menit habis</td><td>Beri kode baru atau ubah <code>session_seconds</code></td></tr>
+    </tbody>
+  </table>
+
+  <h3>Melihat catatan kesalahan</h3>
+  <p>
+    Semua kejadian penting ditulis ke <code>storage/logs/laravel.log</code>. Buka
+    file itu dan baca bagian paling bawah. Setiap baris punya penanda waktu dan
+    kode permintaan yang sama dengan balasan API, jadi mudah dilacak.
+  </p>
+
+  <div class="callout">
+    <span class="callout__label">Kalau bingung</span>
+    <p>
+      Coba jalankan ulang dari langkah paling awal secara berurutan:
+      <code>composer install</code>, <code>php artisan migrate:fresh --seed</code>,
+      <code>php artisan storage:link</code>, <code>npm install</code>,
+      <code>php artisan serve</code>, lalu <code>npm run dev</code>. Sebagian besar
+      masalah hilang dengan urutan itu.
+    </p>
+  </div>
+
+  <div class="footer-note"><span>Snapstrip / panduan</span><span>17</span></div>
+</section>
+
+<!-- 18 SECURITY -->
+<section class="page">
+  <p class="eyebrow">Bagian 11</p>
+  <h2>Catatan keamanan</h2>
+
+  <p>
+    Aplikasi ini dibuat untuk dipakai di dalam bilik foto, bukan untuk internet
+    terbuka tanpa pengawasan. Beberapa hal perlu diperhatikan sebelum dipakai di
+    acara sungguhan.
+  </p>
+
+  <h3>Sebelum hari acara</h3>
+  <ul>
+    <li>Ganti kata sandi <code>admin</code> dan <code>operator</code>.</li>
+    <li>Pastikan <code>.env</code> dan file kunci Google tidak ikut terkirim ke mana pun.</li>
+    <li>Pakai HTTPS kalau layar tamu bukan komputer server itu sendiri.</li>
+    <li>Uji satu sesi penuh, dari kode sampai email masuk.</li>
+    <li>Siapkan beberapa kode cadangan.</li>
+  </ul>
+
+  <h3>Yang sudah dijaga oleh aplikasi</h3>
+  <ul>
+    <li>Kode akses hanya bisa dipakai satu kali, dicek di dalam transaksi database.</li>
+    <li>Sesi staff disimpan di cookie yang tidak bisa dibaca JavaScript.</li>
+    <li>Setiap permintaan yang mengubah data membawa token pelindung dari Laravel.</li>
+    <li>Percobaan masuk dibatasi, sehingga tidak bisa dicoba ribuan kali.</li>
+    <li>Pesan kesalahan server tidak menampilkan isi database atau jejak kode.</li>
+    <li>Ukuran dan jenis file foto diperiksa sebelum disimpan.</li>
+  </ul>
+
+  <h3>Yang perlu dijaga oleh manusia</h3>
+  <ul>
+    <li>Jangan menampilkan dashboard admin ke tamu.</li>
+    <li>Jangan membagikan file kunci Google lewat chat.</li>
+    <li>Hapus foto lama secara berkala dari Drive dan server kalau tidak diperlukan.</li>
+    <li>Simpan email tamu seperlunya, karena itu data pribadi.</li>
+  </ul>
+
+  <hr class="rule">
+
+  <h3>Ringkasan dalam satu paragraf</h3>
+  <p class="muted">
+    Snapstrip adalah bilik foto digital berbasis Laravel dan React. Operator
+    membuat kode akses, tamu memakai kode itu untuk membuka satu sesi enam menit,
+    memotret enam kali, memilih susunan cetak, lalu menerima strip lewat email
+    sementara semua foto tersimpan di Google Drive. Data sesi bisa dilihat di
+    phpMyAdmin, dan seluruh tampilan serta warna diatur dari satu file token.
+  </p>
+
+  <div class="callout callout--calm">
+    <span class="callout__label">Selesai</span>
+    <p>
+      Sampai di sini kamu sudah bisa menjalankan, memakai, dan menyambungkan
+      aplikasi ini. Kalau ada bagian yang perlu ditambah, misalnya pencetakan
+      langsung atau pembayaran, bagian itu dibangun di atas alur yang sudah ada
+      tanpa mengubah bagian lain.
+    </p>
+  </div>
+
+  <div class="footer-note"><span>Snapstrip / panduan</span><span>18</span></div>
+</section>
+
+</body>
+</html>

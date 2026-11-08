@@ -1,0 +1,180 @@
+.done-wrap {
+    display: flex;
+    flex: 1;
+}
+
+/* Mobile: print first, receipt under it. */
+.done {
+    display: grid;
+    flex: 1;
+    grid-template-areas:
+        'print'
+        'receipt';
+    align-content: center;
+    gap: 1.5rem;
+    padding-block: 1.5rem;
+}
+
+.done__print {
+    display: grid;
+    grid-area: print;
+    justify-items: center;
+    gap: 0.8rem;
+}
+
+.done__strip {
+    width: auto;
+    max-width: min(100%, 16rem);
+    max-height: 42dvh;
+    border-radius: var(--radius-xs);
+    box-shadow: 0 22px 48px -30px rgb(0 0 0 / 80%);
+}
+
+.done__download {
+    justify-self: center;
+}
+
+.done__receipt {
+    display: flex;
+    grid-area: receipt;
+    flex-direction: column;
+    gap: 0.85rem;
+    border-radius: var(--radius-md);
+    background: var(--color-paper);
+    padding: 1.2rem;
+    color: var(--color-ink);
+}
+
+.done__receipt-head {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.56rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-paper-muted);
+}
+
+.done__title {
+    font-size: clamp(2rem, 7vw, 2.6rem);
+    color: var(--color-ink);
+}
+
+.done__lede {
+    font-size: 0.88rem;
+    line-height: 1.55;
+    color: var(--color-paper-ink);
+}
+
+.done__facts {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin: 0;
+    border-top: 1px solid var(--color-paper-line);
+    padding-top: 0.7rem;
+}
+
+.done__facts .meta-row {
+    font-size: 0.78rem;
+    color: var(--color-ink);
+}
+
+.done__facts dt {
+    color: var(--color-paper-muted);
+}
+
+.done__receipt .perf {
+    background-image: radial-gradient(circle at 4px 4px, var(--color-ink) 3px, transparent 3.4px);
+}
+
+.done__receipt-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.done__receipt-foot .mono {
+    font-size: 0.58rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-paper-muted);
+}
+
+.done__next {
+    display: none;
+    grid-area: next;
+}
+
+.done__next ol {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    margin: 0.8rem 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.done__next li {
+    display: flex;
+    gap: 0.6rem;
+    align-items: flex-start;
+    border-top: 1px solid var(--color-ink-line);
+    padding-top: 0.9rem;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    color: var(--color-paper-dim);
+}
+
+.done__next svg {
+    flex: 0 0 auto;
+    margin-top: 0.1rem;
+    color: var(--color-amber);
+}
+
+.done__next a {
+    color: var(--color-amber-soft);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+/* Tablet: print left, receipt right. */
+@media (min-width: 640px) {
+    .done {
+        grid-template-areas: 'print receipt';
+        grid-template-columns: minmax(0, 1fr) 20rem;
+        align-items: center;
+        gap: 2rem;
+    }
+
+    .done__strip {
+        max-width: min(100%, 18rem);
+        max-height: 62dvh;
+    }
+}
+
+/* Desktop: add the "what happens next" rail. */
+@media (min-width: 1024px) {
+    .done {
+        grid-template-areas: 'print receipt next';
+        grid-template-columns: minmax(0, 1fr) 20rem 13rem;
+        gap: clamp(1.5rem, 3vw, 2.5rem);
+    }
+
+    .done__next {
+        display: block;
+        align-self: center;
+    }
+}
+
+@media (min-width: 1440px) {
+    .done {
+        grid-template-columns: minmax(0, 1fr) 22rem 14rem;
+        gap: 3.5rem;
+    }
+
+    .done__strip {
+        max-width: 20rem;
+        max-height: 68dvh;
+    }
+}

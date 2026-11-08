@@ -1,0 +1,103 @@
+@layer base {
+    html {
+        -webkit-text-size-adjust: 100%;
+        background-color: var(--color-ink);
+        color-scheme: dark;
+    }
+
+    html,
+    body,
+    #app {
+        min-height: 100%;
+    }
+
+    body {
+        margin: 0;
+        background-color: var(--color-ink);
+        color: var(--color-paper);
+        font-family: var(--font-sans);
+        font-size: 15.5px;
+        line-height: 1.55;
+        letter-spacing: 0.004em;
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+    }
+
+    h1,
+    h2,
+    h3 {
+        font-family: var(--font-display);
+        font-weight: 600;
+        letter-spacing: -0.025em;
+        line-height: 0.98;
+        text-wrap: balance;
+        margin: 0;
+    }
+
+    p {
+        text-wrap: pretty;
+        margin: 0;
+    }
+
+    button {
+        cursor: pointer;
+        font: inherit;
+        color: inherit;
+    }
+
+    input,
+    textarea {
+        font: inherit;
+        color: inherit;
+    }
+
+    img,
+    video {
+        display: block;
+        max-width: 100%;
+    }
+
+    ::selection {
+        background: var(--color-amber);
+        color: var(--color-ink);
+    }
+
+    :focus-visible {
+        outline: 2px solid var(--color-amber-soft);
+        outline-offset: 2px;
+    }
+
+    ::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: var(--color-ink-sink);
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: var(--color-ink-line);
+        border-radius: 999px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: var(--color-muted);
+    }
+
+    * {
+        scrollbar-width: thin;
+        scrollbar-color: var(--color-ink-line) var(--color-ink-sink);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+            scroll-behavior: auto !important;
+        }
+    }
+}

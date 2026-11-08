@@ -1,0 +1,261 @@
+/*
+ * Access code screen. Mobile: copy then form. Tablet: copy left, form right.
+ * Desktop: a three-column composition with a paper ticket preview. Wide: the
+ * ticket grows into a real prop.
+ */
+.access-wrap {
+    display: flex;
+    flex: 1;
+}
+
+.access {
+    display: grid;
+    flex: 1;
+    grid-template-areas:
+        'rail'
+        'form';
+    align-content: center;
+    gap: clamp(1.6rem, 4vh, 2.6rem);
+}
+
+.access__rail {
+    display: grid;
+    grid-area: rail;
+    gap: 0.85rem;
+    max-width: 30rem;
+}
+
+.access__title {
+    font-size: clamp(2.6rem, 11vw, 3.4rem);
+}
+
+.access__back {
+    justify-self: start;
+    margin-left: -0.55rem;
+}
+
+.access__form {
+    display: grid;
+    grid-area: form;
+    align-content: start;
+    gap: 1.1rem;
+    width: 100%;
+    max-width: 30rem;
+}
+
+.access__field {
+    display: grid;
+    gap: 0.35rem;
+}
+
+.access__issue {
+    font-size: 0.78rem;
+    line-height: 1.4;
+    color: var(--color-live-ink);
+}
+
+.access__foot {
+    font-size: 0.64rem;
+    letter-spacing: 0.1em;
+    color: var(--color-muted);
+}
+
+.access__ticket {
+    display: none;
+    grid-area: ticket;
+}
+
+/* ---------- Ticket preview ---------- */
+.ticket {
+    display: grid;
+    gap: 0.9rem;
+    border-radius: var(--radius-xs);
+    background: var(--color-paper);
+    padding: 1rem 1rem 0.9rem;
+    color: var(--color-ink);
+    box-shadow: 0 20px 40px -34px rgb(0 0 0 / 90%);
+}
+
+.ticket__head {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.54rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-paper-muted);
+}
+
+.ticket__slots {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 0.28rem;
+}
+
+.ticket__slot {
+    display: grid;
+    aspect-ratio: 3 / 4;
+    place-items: center;
+    border: 1px solid var(--color-paper-line-soft);
+    border-radius: var(--radius-xs);
+    font-size: clamp(0.8rem, 2.4vw, 1rem);
+    color: var(--color-paper-ghost);
+}
+
+.ticket__slot[data-filled='true'] {
+    border-color: var(--color-ink);
+    background: var(--color-ink);
+    color: var(--color-amber-soft);
+}
+
+.ticket__row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.8rem;
+    border-top: 1px dashed var(--color-paper-line-soft);
+    padding-top: 0.6rem;
+}
+
+.ticket__row .mono {
+    font-size: 0.54rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-paper-muted);
+}
+
+.ticket__value {
+    overflow: hidden;
+    max-width: 65%;
+    font-size: 0.78rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--color-paper-ink);
+}
+
+.ticket .perf {
+    margin-inline: -1rem;
+    background-image: radial-gradient(
+        circle at 4px 4px,
+        var(--color-ink) 3px,
+        transparent 3.4px
+    );
+}
+
+.access__ticket-note {
+    margin-top: 0.6rem;
+    font-size: 0.56rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    text-align: center;
+}
+
+/* ---------- Tablet ---------- */
+@media (min-width: 640px) {
+    .access {
+        grid-template-areas:
+            'rail rail'
+            'form ticket';
+        grid-template-columns: minmax(0, 1fr) 13.5rem;
+        align-content: center;
+        align-items: start;
+        gap: 1.8rem 2rem;
+    }
+
+    .access__rail {
+        grid-template-columns: minmax(0, 1fr) auto;
+        grid-template-areas:
+            'eyebrow back'
+            'title title'
+            'lede lede';
+        align-items: start;
+        max-width: none;
+    }
+
+    .access__rail .eyebrow {
+        grid-area: eyebrow;
+    }
+
+    .access__back {
+        grid-area: back;
+        margin: 0;
+    }
+
+    .access__title {
+        grid-area: title;
+    }
+
+    .access__rail .lede {
+        grid-area: lede;
+        max-width: 32rem;
+    }
+
+    .access__ticket {
+        display: block;
+    }
+
+    .access__form {
+        max-width: none;
+    }
+}
+
+/* ---------- Desktop ---------- */
+@media (min-width: 1024px) {
+    .access {
+        grid-template-areas: 'rail form ticket';
+        grid-template-columns: minmax(15rem, 1fr) minmax(18rem, 24rem) minmax(13rem, 16rem);
+        align-content: center;
+        align-items: center;
+        gap: clamp(2rem, 3.4vw, 3.2rem);
+    }
+
+    .access__rail {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            'eyebrow'
+            'title'
+            'lede'
+            'back';
+        align-content: start;
+        gap: 0.9rem;
+    }
+
+    .access__back {
+        justify-self: start;
+        margin-top: 0.4rem;
+        margin-left: -0.55rem;
+    }
+
+    .access__title {
+        font-size: clamp(3rem, 3.6vw, 3.8rem);
+    }
+
+    .access__form {
+        justify-self: stretch;
+    }
+
+    .ticket {
+        padding: 1.15rem 1.15rem 1rem;
+    }
+
+    .ticket__slot {
+        font-size: 1.02rem;
+    }
+}
+
+/* ---------- Wide ---------- */
+@media (min-width: 1440px) {
+    .access {
+        grid-template-columns: minmax(17rem, 1fr) 26rem minmax(15rem, 19rem);
+        gap: 4rem;
+    }
+
+    .access__title {
+        font-size: clamp(3.4rem, 3.4vw, 4.4rem);
+    }
+
+    .ticket__slot {
+        font-size: 1.15rem;
+    }
+}
