@@ -32,6 +32,7 @@ Bilik foto digital untuk acara, kafe, atau studio kecil. Operator membuat kode a
 | File strip | Disusun di server dengan GD sesuai susunan yang dipilih |
 | Kirim email | Strip sebagai lampiran, tautan ke file dan ke folder Drive |
 | Google Drive | Satu folder per sesi, dinamai kode akses, berisi enam foto dan strip |
+| Strip di database | Lembar strip juga disimpan di kolom `strip_blob`, jadi phpMyAdmin bisa menampilkan gambarnya per sesi |
 | Dashboard staff | Admin membuat kode, operator memantau kode dan sesi |
 | Responsif | Tampilan berbeda untuk ponsel, tablet, desktop, dan layar lebar |
 
@@ -160,6 +161,8 @@ php artisan tinker
 ```
 
 Hasil `true` berarti kunci dan ID folder sudah terbaca. Setiap sesi akan membuat folder baru bernama `<KODE> SNAP-XXXXXXXX` berisi `potret-1.jpg` sampai `potret-6.jpg` dan `strip-SNAP-XXXXXXXX.jpg`.
+
+Lembar strip yang sama juga disimpan sebagai gambar di kolom `strip_blob` pada tabel `booth_orders`, jadi phpMyAdmin bisa menampilkan pratinjaunya per sesi.
 
 Kegagalan Drive tidak membatalkan sesi. Sebabnya dicatat di `storage/logs/laravel.log` dengan awalan `Upload Drive gagal`.
 

@@ -10,7 +10,8 @@ use Illuminate\Support\Str;
 
 #[Fillable([
     'public_id', 'email', 'layout_id', 'arrangement', 'shot_count',
-    'amount', 'access_code', 'photo_paths', 'strip_path', 'status', 'email_sent_at',
+    'amount', 'access_code', 'photo_paths', 'strip_path', 'strip_blob', 'strip_mime',
+    'status', 'email_sent_at', 'drive_folder_id', 'drive_link',
 ])]
 class BoothOrder extends Model
 {

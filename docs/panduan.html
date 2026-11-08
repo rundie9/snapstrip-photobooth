@@ -1215,6 +1215,12 @@ npm run dev</code></pre>
     </tbody>
   </table>
 
+  <p class="muted">
+    Lembar yang sama juga disimpan di kolom <code>strip_blob</code> pada tabel
+    <code>booth_orders</code>, sehingga phpMyAdmin bisa menampilkan gambar strip
+    tiap sesi tanpa membuka folder server.
+  </p>
+
   <p>
     Tautan folder disimpan di kolom <code>drive_link</code> pada tabel
     <code>booth_orders</code>, ikut tampil di layar selesai, dan ikut disertakan
@@ -1273,7 +1279,8 @@ MAIL_FROM_NAME="Snapstrip"</code></pre>
     <code>public_id</code> (kode sesi seperti SNAP-XXXXXXXX), <code>email</code>,
     <code>layout_id</code> (bingkai yang dipilih), <code>shot_count</code>
     (jumlah foto), <code>amount</code> (harga), <code>strip_path</code> (lokasi
-    file strip), <code>drive_link</code> (tautan folder Drive), dan
+    file strip), <code>strip_blob</code> (gambar strip yang bisa dipratinjau),
+    <code>drive_link</code> (tautan folder Drive), dan
     <code>email_sent_at</code> (waktu email terkirim).
   </p>
 
@@ -1296,6 +1303,14 @@ MAIL_FROM_NAME="Snapstrip"</code></pre>
   <pre><code>UPDATE users
 SET password = 'hasil-acakan-dari-tinker'
 WHERE username = 'admin';</code></pre>
+
+  <h3>Gambar strip di phpMyAdmin</h3>
+  <p class="muted">
+    Setiap sesi menyimpan satu gambar strip di kolom <code>strip_blob</code> pada
+    tabel <code>booth_orders</code>. Buka tabel itu, lalu klik ikon pratinjau di
+    baris yang ingin dilihat. Dengan begitu foto tiap akun atau tiap kode bisa
+    diperiksa langsung dari phpMyAdmin tanpa membuka folder di server.
+  </p>
 
   <div class="callout callout--calm">
     <span class="callout__label">Melihat file foto</span>

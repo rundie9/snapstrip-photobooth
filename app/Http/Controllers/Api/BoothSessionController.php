@@ -15,6 +15,7 @@ use App\Support\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Throwable;
 
 class BoothSessionController extends Controller
@@ -102,6 +103,8 @@ class BoothSessionController extends Controller
             'amount' => $layout['price'],
             'photo_paths' => $paths,
             'strip_path' => $stripPath,
+            'strip_blob' => Storage::disk('public')->get($stripPath),
+            'strip_mime' => 'image/jpeg',
             'status' => BoothOrder::STATUS_CAPTURED,
         ]);
 
